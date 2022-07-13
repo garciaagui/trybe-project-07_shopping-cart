@@ -3,7 +3,9 @@
 // const saveCartItems = require("./helpers/saveCartItems");
 // const getSavedCartItems = require("./helpers/getSavedCartItems");
 // const getSavedCartItems = require("./helpers/getSavedCartItems");
+const cartList = document.querySelector('.cart__items');
 const subtotalSection = document.querySelector('.total-price');
+const clearCartButton = document.querySelector('.empty-cart');
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -50,6 +52,14 @@ const calculateSubtotal = async () => {
   subtotalSection.innerHTML = subtotal;
 };
 
+const clearCart = () => {
+  while (cartList.firstChild) {
+    cartList.removeChild(cartList.firstChild);
+  }
+  applyCartSavingLogic();
+  calculateSubtotal();
+};
+
 const cartItemClickListener = (event) => {
   event.target.remove();
   applyCartSavingLogic();
@@ -68,7 +78,6 @@ const addItemToCart = async (event) => {
   const info = event.target.parentElement.firstChild.innerHTML;
   const item = await fetchItem(info);
   const { id, title, price } = item;
-  const cartList = document.querySelector('.cart__items');
   cartList.appendChild(createCartItemElement({
     sku: id,
     name: title,
@@ -100,7 +109,6 @@ const createProductList = async () => {
 const getStoredItems = () => {
   const storedItems = JSON.parse(getSavedCartItems());
   if (storedItems) {
-    const cartList = document.querySelector('.cart__items');
     storedItems.forEach((item) => {
       cartList.innerHTML += item;
       cartList.lastChild.className = 'cart__item';
@@ -119,4 +127,5 @@ window.onload = () => {
   createProductList();
   getStoredItems();
   getStoredSubtotalPrice();
+  clearCartButton.addEventListener('click', clearCart);
 };
