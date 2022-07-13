@@ -1,5 +1,8 @@
 // const { fetchProducts } = require('./helpers/fetchProducts');
 // const { fetchItem } = require("./helpers/fetchItem");
+// const saveCartItems = require("./helpers/saveCartItems");
+// const getSavedCartItems = require("./helpers/getSavedCartItems");
+// const getSavedCartItems = require("./helpers/getSavedCartItems");
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -29,8 +32,15 @@ const createProductItemElement = ({ sku, name, image }) => {
 
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
+const applyCartSavingLogic = () => {
+  const itemsArr = Array.from(document.querySelectorAll('.cart__item'))
+    .map((item) => `<li>${item.innerText}</li>`);
+  saveCartItems(JSON.stringify(itemsArr));
+};
+
 const cartItemClickListener = (event) => {
   event.target.remove();
+  applyCartSavingLogic();
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
@@ -44,12 +54,14 @@ const createCartItemElement = ({ sku, name, salePrice }) => {
 const addItemToCart = async (event) => {
   const info = event.target.parentElement.firstChild.innerHTML;
   const item = await fetchItem(info);
+  const { id, title, price } = item;
   const cartList = document.querySelector('.cart__items');
   cartList.appendChild(createCartItemElement({
-    sku: item.id,
-    name: item.title,
-    salePrice: item.price,
+    sku: id,
+    name: title,
+    salePrice: price,
   }));
+  applyCartSavingLogic();
 };
 
 const applyAddItemLogic = () => {
@@ -71,6 +83,20 @@ const createProductList = async () => {
   applyAddItemLogic();
 };
 
+const getStoredItems = () => {
+  const storedItems = JSON.parse(getSavedCartItems());
+  if (storedItems) {
+    const cartList = document.querySelector('.cart__items');
+    storedItems.forEach((item) => {
+      cartList.innerHTML += item;
+      cartList.lastChild.className = 'cart__item';
+    });
+    Array.from(document.querySelectorAll('.cart__item'))
+      .forEach((item) => item.addEventListener('click', cartItemClickListener));
+  }
+};
+
 window.onload = () => {
   createProductList();
+  getStoredItems();
 };
