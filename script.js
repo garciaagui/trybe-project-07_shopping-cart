@@ -3,6 +3,7 @@
 // const saveCartItems = require("./helpers/saveCartItems");
 // const getSavedCartItems = require("./helpers/getSavedCartItems");
 // const getSavedCartItems = require("./helpers/getSavedCartItems");
+const subtotalSection = document.querySelector('.total-price');
 
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
@@ -38,9 +39,21 @@ const applyCartSavingLogic = () => {
   saveCartItems(JSON.stringify(itemsArr));
 };
 
+const calculateSubtotal = async () => {
+  const storedItems = JSON.parse(getSavedCartItems());
+  const priceItems = storedItems.map((item) => {
+    const price = item.split('PRICE: $')[1].match(/\d+/g).join('.');
+    return parseFloat(price);
+  });
+  const subtotal = priceItems.reduce((total, curr) => (Math.round((total + curr) * 100) / 100), 0);
+  localStorage.setItem('subtotalPrice', subtotal);
+  subtotalSection.innerHTML = subtotal;
+};
+
 const cartItemClickListener = (event) => {
   event.target.remove();
   applyCartSavingLogic();
+  calculateSubtotal();
 };
 
 const createCartItemElement = ({ sku, name, salePrice }) => {
@@ -62,6 +75,7 @@ const addItemToCart = async (event) => {
     salePrice: price,
   }));
   applyCartSavingLogic();
+  await calculateSubtotal();
 };
 
 const applyAddItemLogic = () => {
@@ -96,7 +110,13 @@ const getStoredItems = () => {
   }
 };
 
+const getStoredSubtotalPrice = () => {
+  const subtotal = localStorage.getItem('subtotalPrice');
+  subtotalSection.innerHTML = subtotal;
+};
+
 window.onload = () => {
   createProductList();
   getStoredItems();
+  getStoredSubtotalPrice();
 };
