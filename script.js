@@ -6,6 +6,7 @@
 const cartList = document.querySelector('.cart__items');
 const subtotalSection = document.querySelector('.total-price');
 const clearCartButton = document.querySelector('.empty-cart');
+const currencyFormat = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
 
 const displayLoading = () => {
   const container = document.querySelector('.container');
@@ -23,23 +24,25 @@ const hideLoading = () => {
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
   img.className = 'item__image';
-  img.src = imageSource;
+  img.src = imageSource.replace('I', 'W');
   return img;
 };
 
 const createCustomElement = (element, className, innerText) => {
   const e = document.createElement(element);
   e.className = className;
-  e.innerText = innerText;
+  if (className === 'item__price') e.innerText = innerText.toLocaleString('pt-BR', currencyFormat);
+  else e.innerText = innerText;
   return e;
 };
 
-const createProductItemElement = ({ sku, name, image }) => {
+const createProductItemElement = ({ sku, name, price, image }) => {
   const section = document.createElement('section');
   section.className = 'item';
 
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
+  section.appendChild(createCustomElement('span', 'item__price', price));
   section.appendChild(createProductImageElement(image));
   section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
 
@@ -113,6 +116,7 @@ const createProductList = async () => {
     const item = createProductItemElement({
       sku: product.id,
       name: product.title,
+      price: product.price,
       image: product.thumbnail,
     });
     itemsSection.appendChild(item);
