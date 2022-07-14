@@ -7,6 +7,19 @@ const cartList = document.querySelector('.cart__items');
 const subtotalSection = document.querySelector('.total-price');
 const clearCartButton = document.querySelector('.empty-cart');
 
+const displayLoading = () => {
+  const container = document.querySelector('.container');
+  const loadingScreen = document.createElement('div');
+  loadingScreen.classList.add('loading');
+  loadingScreen.innerHTML = 'Carregando...';
+  container.appendChild(loadingScreen);
+};
+
+const hideLoading = () => {
+  const loadingScreen = document.querySelector('.loading');
+  loadingScreen.remove();
+};
+
 const createProductImageElement = (imageSource) => {
   const img = document.createElement('img');
   img.className = 'item__image';
@@ -93,6 +106,7 @@ const applyAddItemLogic = () => {
 };
 
 const createProductList = async () => {
+  displayLoading();
   const productList = await fetchProducts('computador');
   const itemsSection = document.querySelector('.items');
   productList.results.forEach((product) => {
@@ -104,6 +118,7 @@ const createProductList = async () => {
     itemsSection.appendChild(item);
   });
   applyAddItemLogic();
+  hideLoading();
 };
 
 const getStoredItems = () => {
