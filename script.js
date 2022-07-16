@@ -1,14 +1,7 @@
-// const { fetchProducts } = require('./helpers/fetchProducts');
-// const { fetchItem } = require("./helpers/fetchItem");
-// const saveCartItems = require("./helpers/saveCartItems");
-// const getSavedCartItems = require("./helpers/getSavedCartItems");
-// const getSavedCartItems = require("./helpers/getSavedCartItems");
 const cartList = document.querySelector('.cart__items');
-const subtotalSection = document.querySelector('.total-price');
 const clearCartButton = document.querySelector('.empty-cart');
-const currencyFormat = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
 
-const displayLoading = () => {
+const displayLoadingScreen = () => {
   const container = document.querySelector('.container');
   const loadingScreen = document.createElement('div');
   loadingScreen.classList.add('loading');
@@ -16,7 +9,7 @@ const displayLoading = () => {
   container.appendChild(loadingScreen);
 };
 
-const hideLoading = () => {
+const hideLoadingScreen = () => {
   const loadingScreen = document.querySelector('.loading');
   loadingScreen.remove();
 };
@@ -31,7 +24,8 @@ const createProductImageElement = (imageSource, className) => {
 const createCustomElement = (element, className, innerText) => {
   const e = document.createElement(element);
   e.className = className;
-  if (className === 'item__price' || className === 'cart__price') {
+  if (className === 'item__price') {
+    const currencyFormat = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
     e.innerText = innerText.toLocaleString('pt-BR', currencyFormat);
   } else e.innerText = innerText;
   return e;
@@ -48,15 +42,7 @@ const createProductItemElement = ({ sku, name, price, image }) => {
   return section;
 };
 
-const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
-
-// const applyCartSavingLogic = () => {
-//   const itemsArr = Array.from(document.querySelectorAll('.cart__item'))
-//     .map((item) => `<li>${item.innerText}</li>`);
-//   saveCartItems(JSON.stringify(itemsArr));
-// };
-
-const applyCartSavingLogic = () => {
+const applyCartSaveLogic = () => {
     const itemsArr = Array.from(document.querySelectorAll('.cart__item'))
       .map((item) => `${item.lastChild.src} <li>${item.innerText}</li>`);
     saveCartItems(JSON.stringify(itemsArr));
@@ -64,6 +50,7 @@ const applyCartSavingLogic = () => {
 
 const calculateSubtotal = async () => {
   const storedItems = JSON.parse(getSavedCartItems());
+  const subtotalSection = document.querySelector('.total-price');
   const priceItems = storedItems.map((item) => {
     const price = item.split('PRICE: $')[1].match(/\d+/g).join('.');
     return parseFloat(price);
@@ -77,14 +64,14 @@ const clearCart = () => {
   while (cartList.firstChild) {
     cartList.removeChild(cartList.firstChild);
   }
-  applyCartSavingLogic();
+  applyCartSaveLogic();
   calculateSubtotal();
 };
 
 const cartItemClickListener = (event) => {
   if (event.target.parentElement.className === 'cart__item') event.target.parentElement.remove();
   else event.target.remove();
-  applyCartSavingLogic();
+  applyCartSaveLogic();
   calculateSubtotal();
 };
 
@@ -97,9 +84,11 @@ const createCartItemElement = ({ sku, name, salePrice, image }) => {
   return li;
 };
 
+const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
+
 const addItemToCart = async (event) => {
-  const info = event.target.parentElement.firstChild.innerHTML;
-  const item = await fetchItem(info);
+  const listItem = event.target.parentElement;
+  const item = await fetchItem(getSkuFromProductItem(listItem));
   const { id, title, price, thumbnail } = item;
   cartList.appendChild(createCartItemElement({
     sku: id,
@@ -107,19 +96,24 @@ const addItemToCart = async (event) => {
     salePrice: price,
     image: thumbnail,
   }));
-  applyCartSavingLogic();
+  applyCartSaveLogic();
   await calculateSubtotal();
 };
 
-const applyAddItemLogic = () => {
-    const addCartButtons = document.querySelectorAll('.item__add');
-    addCartButtons.forEach((button) => button.addEventListener('click', addItemToCart));  
+const applyAddItemToCartLogic = () => {
+    const addCartBtn = document.querySelectorAll('.item__add');
+    addCartBtn.forEach((button) => button.addEventListener('click', addItemToCart));  
+};
+
+const applyRemoveItemFromCartLogic = () => {
+  Array.from(document.querySelectorAll('.cart__item'))
+  .forEach((item) => item.addEventListener('click', cartItemClickListener));
 };
 
 const createProductList = async () => {
-  displayLoading();
+  displayLoadingScreen();
   const productList = await fetchProducts('computador');
-  const itemsSection = document.querySelector('.items');
+  const productSection = document.querySelector('.items');
   productList.results.forEach((product) => {
     const item = createProductItemElement({
       sku: product.id,
@@ -127,13 +121,13 @@ const createProductList = async () => {
       price: product.price,
       image: product.thumbnail,
     });
-    itemsSection.appendChild(item);
+    productSection.appendChild(item);
   });
-  applyAddItemLogic();
-  hideLoading();
+  applyAddItemToCartLogic();
+  hideLoadingScreen();
 };
 
-const getStoredItems = () => {
+const retrieveCartItems = () => {
   const storedItems = JSON.parse(getSavedCartItems());
   if (storedItems) {
     storedItems.forEach((item) => {
@@ -142,19 +136,13 @@ const getStoredItems = () => {
       cartList.lastChild.className = 'cart__item';
       cartList.lastChild.appendChild(createProductImageElement(info[0], 'cart__img'));
     });
-    Array.from(document.querySelectorAll('.cart__item'))
-      .forEach((item) => item.addEventListener('click', cartItemClickListener));
+    applyRemoveItemFromCartLogic();
   }
-};
-
-const getStoredSubtotalPrice = () => {
-  const subtotal = localStorage.getItem('subtotalPrice');
-  subtotalSection.innerHTML = subtotal;
+  calculateSubtotal();
 };
 
 window.onload = () => {
   createProductList();
-  getStoredItems();
-  getStoredSubtotalPrice();
+  retrieveCartItems();
   clearCartButton.addEventListener('click', clearCart);
 };
