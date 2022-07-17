@@ -14,6 +14,14 @@ const hideLoadingScreen = () => {
   loadingScreen.remove();
 };
 
+const showScrollDownCartTitle = () => {
+  const scrollDownCartTitle = document.querySelector('.scroll-down-title');
+  scrollDownCartTitle.innerText = 'Meu carrinho';
+  if (window.scrollY > 58.8) {
+    scrollDownCartTitle.style.display = 'block';
+  } else scrollDownCartTitle.style.display = 'none';
+};
+
 const createProductImageElement = (imageSource, className) => {
   const img = document.createElement('img');
   img.className = className;
@@ -140,6 +148,8 @@ const retrieveCartItems = () => {
   }
   calculateSubtotal();
 };
+
+window.addEventListener('scroll', showScrollDownCartTitle);
 
 window.onload = () => {
   createProductList();
