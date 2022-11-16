@@ -1,5 +1,6 @@
 const cartList = document.querySelector('.cart__items');
 const clearCartButton = document.querySelector('.empty-cart');
+const searchButton = document.querySelector('#search-btn');
 
 const displayLoadingScreen = () => {
   const container = document.querySelector('.container');
@@ -51,10 +52,10 @@ const createProductItemElement = ({ sku, name, price, image }) => {
 };
 
 const applyCartSaveLogic = () => {
-    const itemsArr = Array.from(document.querySelectorAll('.cart__item'))
-      .map((item) => `${item.lastChild.src} <li>${item.innerText}</li>`);
-    saveCartItems(JSON.stringify(itemsArr));
-  };
+  const itemsArr = Array.from(document.querySelectorAll('.cart__item'))
+    .map((item) => `${item.lastChild.src} <li>${item.innerText}</li>`);
+  saveCartItems(JSON.stringify(itemsArr));
+};
 
 const calculateSubtotal = async () => {
   const storedItems = JSON.parse(getSavedCartItems());
@@ -66,6 +67,13 @@ const calculateSubtotal = async () => {
   const subtotal = priceItems.reduce((total, curr) => (Math.round((total + curr) * 100) / 100), 0);
   localStorage.setItem('subtotalPrice', subtotal);
   subtotalSection.innerHTML = subtotal;
+};
+
+const clearProductList = () => {
+  const listItems = document.querySelector('.items');
+  while (listItems.firstChild) {
+    listItems.removeChild(listItems.firstChild);
+  }
 };
 
 const clearCart = () => {
@@ -109,18 +117,19 @@ const addItemToCart = async (event) => {
 };
 
 const applyAddItemToCartLogic = () => {
-    const addCartBtn = document.querySelectorAll('.item__add');
-    addCartBtn.forEach((button) => button.addEventListener('click', addItemToCart));  
+  const addCartBtn = document.querySelectorAll('.item__add');
+  addCartBtn.forEach((button) => button.addEventListener('click', addItemToCart));
 };
 
 const applyRemoveItemFromCartLogic = () => {
   Array.from(document.querySelectorAll('.cart__item'))
-  .forEach((item) => item.addEventListener('click', cartItemClickListener));
+    .forEach((item) => item.addEventListener('click', cartItemClickListener));
 };
 
-const createProductList = async () => {
+const createProductList = async (searchValue) => {
   displayLoadingScreen();
-  const productList = await fetchProducts('computador');
+  clearProductList();
+  const productList = await fetchProducts(searchValue);
   const productSection = document.querySelector('.items');
   productList.results.forEach((product) => {
     const item = createProductItemElement({
@@ -152,7 +161,13 @@ const retrieveCartItems = () => {
 window.addEventListener('scroll', showScrollDownCartTitle);
 
 window.onload = () => {
-  createProductList();
+  createProductList('computador');
   retrieveCartItems();
   clearCartButton.addEventListener('click', clearCart);
 };
+
+searchButton.addEventListener('click', () => {
+  const searchValue = document.querySelector('#search-input').value;
+  createProductList(searchValue);
+  document.querySelector('#search-input').value = '';
+});
