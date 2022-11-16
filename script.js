@@ -1,6 +1,6 @@
 const cartList = document.querySelector('.cart__items');
 const clearCartButton = document.querySelector('.empty-cart');
-const searchButton = document.querySelector('#search-btn');
+const searchButton = document.querySelector('.search-btn');
 
 const displayLoadingScreen = () => {
   const container = document.querySelector('.container');
@@ -167,7 +167,7 @@ window.onload = () => {
 };
 
 searchButton.addEventListener('click', () => {
-  const searchValue = document.querySelector('#search-input').value;
+  const searchValue = document.querySelector('.search-input').value;
   createProductList(searchValue);
-  document.querySelector('#search-input').value = '';
+  document.querySelector('.search-input').value = '';
 });
