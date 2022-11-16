@@ -161,11 +161,13 @@ body {
   flex-direction: column;
   height: auto;
   margin: 10px;
+  transition: 0.5s;
   width: 250px;
 }
 
 .item:hover {
   box-shadow: 0 0 15px rgb(179, 179, 179);
+  transition: 0.5s;
 }
 
 .item .item__sku {
@@ -189,13 +191,20 @@ body {
 .item .item__title {
   align-items: baseline;
   color: rgb(59, 59, 59);
+  display: -webkit-box !important;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
   display: flex;
   flex-grow: 1;
   font-size: 15px;
   line-height: 1.2rem;
   margin-bottom: 10px;
   order: 2;
+  overflow: hidden;
   padding: 0 10px;
+  text-overflow: ellipsis;
+  white-space: normal;
+
 }
 
 .item .item__add {
@@ -206,10 +215,12 @@ body {
   margin: 0;
   order: 3;
   padding: 10px;
+  transition: 0.2s;
 }
 
 .item .item__add:hover {
   background-color: rgb(10, 118, 79);
+  transition: 0.2s;
 }
 
 .cart {
