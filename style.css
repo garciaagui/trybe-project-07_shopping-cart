@@ -314,6 +314,16 @@ body {
   padding: 5px;
 }
 
+.empty-cart-message {
+  align-items: center;
+  color: rgb(32, 118, 79);
+  display: flex;
+  font-size: 24px;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+
 .cart__info {
   margin-bottom: 30px;
 }
@@ -333,7 +343,7 @@ body {
   content: 'Subtotal: ';
 }
 
-.empty-cart {
+.empty-cart-btn {
   align-items: center;
   background-color: rgb(249, 249, 246);
   border: 2px solid orangered;

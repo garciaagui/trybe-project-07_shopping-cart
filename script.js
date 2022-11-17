@@ -1,5 +1,5 @@
 const cartList = document.querySelector('.cart__items');
-const clearCartButton = document.querySelector('.empty-cart');
+const clearCartButton = document.querySelector('.empty-cart-btn');
 const searchButton = document.querySelector('.search-btn');
 const currencyFormat = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
 
@@ -14,6 +14,22 @@ const displayLoadingScreen = () => {
 const hideLoadingScreen = () => {
   const loadingScreen = document.querySelector('.loading');
   loadingScreen.remove();
+};
+
+const displayEmptyCartMessage = () => {
+  if (!cartList.children.length) {
+    const emptyCartMessage = document.createElement('div');
+    emptyCartMessage.classList.add('empty-cart-message');
+    emptyCartMessage.innerHTML = 'Carrinho vazio...';
+    cartList.appendChild(emptyCartMessage);
+  }
+};
+
+const hideEmptyCartMessage = () => {
+  if (cartList.children.length) {
+    const emptyCartMessage = document.querySelector('.empty-cart-message');
+    emptyCartMessage.remove();
+  }
 };
 
 const showScrollDownCartTitle = () => {
@@ -81,6 +97,7 @@ const clearCart = () => {
     cartList.removeChild(cartList.firstChild);
   }
   applyCartSaveLogic();
+  displayEmptyCartMessage();
   calculateSubtotal();
 };
 
@@ -89,6 +106,7 @@ const cartItemClickListener = (event) => {
     event.target.parentElement.parentElement.remove();
   }
   applyCartSaveLogic();
+  displayEmptyCartMessage();
   calculateSubtotal();
 };
 
@@ -130,6 +148,7 @@ const addItemToCart = async (event) => {
     image: thumbnail,
   }));
   applyCartSaveLogic();
+  hideEmptyCartMessage();
   await calculateSubtotal();
 };
 
@@ -185,6 +204,7 @@ window.addEventListener('scroll', showScrollDownCartTitle);
 window.onload = () => {
   createProductList('computador');
   retrieveCartItems();
+  displayEmptyCartMessage();
   clearCartButton.addEventListener('click', clearCart);
 };
 
