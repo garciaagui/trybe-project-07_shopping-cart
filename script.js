@@ -1,6 +1,7 @@
 const cartList = document.querySelector('.cart__items');
 const clearCartButton = document.querySelector('.empty-cart');
 const searchButton = document.querySelector('.search-btn');
+const currencyFormat = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
 
 const displayLoadingScreen = () => {
   const container = document.querySelector('.container');
@@ -34,7 +35,6 @@ const createCustomElement = (element, className, innerText) => {
   const e = document.createElement(element);
   e.className = className;
   if (className === 'item__price') {
-    const currencyFormat = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
     e.innerText = innerText.toLocaleString('pt-BR', currencyFormat);
   } else e.innerText = innerText;
   return e;
@@ -61,12 +61,12 @@ const calculateSubtotal = async () => {
   const storedItems = JSON.parse(getSavedCartItems());
   const subtotalSection = document.querySelector('.total-price');
   const priceItems = storedItems.map((item) => {
-    const price = item.split('PRICE: $')[1].match(/\d+/g).join('.');
+    const price = item.split('R$ ')[1].match(/\d+/g).join('.');
     return parseFloat(price);
   });
   const subtotal = priceItems.reduce((total, curr) => (Math.round((total + curr) * 100) / 100), 0);
   localStorage.setItem('subtotalPrice', subtotal);
-  subtotalSection.innerHTML = subtotal;
+  subtotalSection.innerHTML = subtotal.toLocaleString('pt-BR', currencyFormat);;
 };
 
 const clearProductList = () => {
@@ -85,18 +85,35 @@ const clearCart = () => {
 };
 
 const cartItemClickListener = (event) => {
-  if (event.target.parentElement.className === 'cart__item') event.target.parentElement.remove();
-  else event.target.remove();
+  if (event.target.parentElement.parentElement.className === 'cart__item') {
+    event.target.parentElement.parentElement.remove();
+  }
   applyCartSaveLogic();
   calculateSubtotal();
 };
 
-const createCartItemElement = ({ sku, name, salePrice, image }) => {
+const createCartItemElement = ({ name, salePrice, image }) => {
   const li = document.createElement('li');
+  const liTitle = document.createElement('p');
+  const liPrice = document.createElement('p');
+  const section = document.createElement('section');
+  const removeBtn = document.createElement('button');
+
   li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  liTitle.innerText = name;
+  liTitle.className = 'cart__item__title';
+  liPrice.innerText = `R$ ${parseFloat(salePrice).toFixed(2)}`;
+  liPrice.className = 'cart__item__price';
+  removeBtn.innerText = 'Remover item';
+  removeBtn.className = 'cart__item__removeBtn'
+  section.className = 'cart__item__section';
+
+  section.appendChild(liTitle);
+  section.appendChild(liPrice);
+  section.appendChild(removeBtn);
+  li.appendChild(section);
   li.appendChild(createProductImageElement(image, 'cart__img'));
-  li.addEventListener('click', cartItemClickListener);
+  removeBtn.addEventListener('click', cartItemClickListener);
   return li;
 };
 
@@ -149,10 +166,15 @@ const retrieveCartItems = () => {
   if (storedItems) {
     storedItems.forEach((item) => {
       const info = item.split(' <li>');
-      cartList.innerHTML += `<li>${info[1]}`;
-      cartList.lastChild.className = 'cart__item';
-      cartList.lastChild.appendChild(createProductImageElement(info[0], 'cart__img'));
+      const priceIndex = info[1].indexOf('R$');
+      const name = info[1].slice(0, priceIndex);
+      const price = info[1].slice(priceIndex, info[1].indexOf('</li')).replace('R$', '');
+      cartList.appendChild(createCartItemElement({ name, salePrice: price, image: info[0] }));
     });
+    Array.prototype.slice.call(document.getElementsByTagName('br'))
+      .forEach((item) => {
+        item.remove();
+      });
     applyRemoveItemFromCartLogic();
   }
   calculateSubtotal();
