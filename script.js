@@ -26,8 +26,8 @@ const displayEmptyCartMessage = () => {
 };
 
 const hideEmptyCartMessage = () => {
-  if (cartList.children.length) {
-    const emptyCartMessage = document.querySelector('.empty-cart-message');
+  const emptyCartMessage = document.querySelector('.empty-cart-message');
+  if (cartList.children.length && emptyCartMessage) {
     emptyCartMessage.remove();
   }
 };
