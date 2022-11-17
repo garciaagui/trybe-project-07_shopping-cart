@@ -314,6 +314,10 @@ body {
   padding: 5px;
 }
 
+.cart__info {
+  margin-bottom: 30px;
+}
+
 .total-price {
   background-color: rgb(3, 52, 45);
   color: white;
@@ -322,10 +326,11 @@ body {
   margin: 0 200px;
   padding: 10px;
   text-align: center;
+  width: 250px;
 }
 
 .total-price:before {
-  content: 'Subtotal: R$ ';
+  content: 'Subtotal: ';
 }
 
 .empty-cart {
