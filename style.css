@@ -226,7 +226,7 @@ body {
 .cart {
   display: flex;
   flex-basis: 32%;
-  flex-flow: column wrap;
+  flex-flow: column;
   background-color: white;
   height: 100vh;
   position: sticky;
@@ -237,7 +237,7 @@ body {
   color: rgb(32, 118, 79);
   font-size: 24px;
   font-weight: 700;
-  margin: 15px auto 0;
+  margin: 30px auto 0;
 }
 
 .cart .cart__items {
@@ -358,7 +358,7 @@ body {
   width: 180px;
 }
 
-.empty-cart:hover {
+.empty-cart-btn:hover {
   background-color: orangered;
   color: white;
   transition: 0.2s;
