@@ -2,6 +2,11 @@ const cartList = document.querySelector('.cart__items');
 const clearCartButton = document.querySelector('.empty-cart-btn');
 const searchButton = document.querySelector('.search-btn');
 const currencyFormat = { minimumFractionDigits: 2, style: 'currency', currency: 'BRL' };
+const popupOperations = {
+  added: 'Item adicionado!',
+  removed: 'Item removido!',
+  cleared: 'Carrinho limpo!'
+}
 
 const displayLoadingScreen = () => {
   const container = document.querySelector('.container');
@@ -31,6 +36,17 @@ const hideEmptyCartMessage = () => {
     emptyCartMessage.remove();
   }
 };
+
+const displayPopupAlert = (operation) => {
+  const container = document.querySelector('.popup-container');
+  const popup = document.createElement('div');
+  popup.classList.add(operation);
+  popup.innerHTML = popupOperations[operation];
+  container.appendChild(popup);
+  setTimeout(() => {
+    popup.remove();
+  }, 3000)
+}
 
 const showScrollDownCartTitle = () => {
   const scrollDownCartTitle = document.querySelector('.scroll-down-title');
@@ -96,6 +112,7 @@ const clearCart = () => {
   while (cartList.firstChild) {
     cartList.removeChild(cartList.firstChild);
   }
+  displayPopupAlert('cleared')
   applyCartSaveLogic();
   displayEmptyCartMessage();
   calculateSubtotal();
@@ -105,6 +122,7 @@ const cartItemClickListener = (event) => {
   if (event.target.parentElement.parentElement.className === 'cart__item') {
     event.target.parentElement.parentElement.remove();
   }
+  displayPopupAlert('removed')
   applyCartSaveLogic();
   displayEmptyCartMessage();
   calculateSubtotal();
@@ -138,6 +156,7 @@ const createCartItemElement = ({ name, salePrice, image }) => {
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
 const addItemToCart = async (event) => {
+  displayPopupAlert('added');
   const listItem = event.target.parentElement;
   const item = await fetchItem(getSkuFromProductItem(listItem));
   const { id, title, price, thumbnail } = item;
