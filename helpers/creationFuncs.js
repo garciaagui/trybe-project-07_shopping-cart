@@ -1,11 +1,11 @@
-const createProductImageElement = (imageSource, className) => {
+const createImageElement = (imageSource, className) => {
   const img = document.createElement('img');
   img.className = className;
   img.src = imageSource.replace('I', 'W');
   return img;
 };
 
-const createCustomElement = (element, className, innerText) => {
+const createCustomProductElement = (element, className, innerText) => {
   const e = document.createElement(element);
   e.className = className;
   if (className === 'item__price') {
@@ -17,48 +17,46 @@ const createCustomElement = (element, className, innerText) => {
 const createProductItemElement = ({ sku, name, price, image }) => {
   const section = document.createElement('section');
   section.className = 'item';
-  section.appendChild(createCustomElement('span', 'item__sku', sku));
-  section.appendChild(createCustomElement('span', 'item__title', name));
-  section.appendChild(createCustomElement('span', 'item__price', price));
-  section.appendChild(createProductImageElement(image, 'item__image'));
-  section.appendChild(createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'));
+  section.appendChild(createCustomProductElement('span', 'item__sku', sku));
+  section.appendChild(createCustomProductElement('span', 'item__title', name));
+  section.appendChild(createCustomProductElement('span', 'item__price', price));
+  section.appendChild(createImageElement(image, 'item__image'));
+  section.appendChild(createCustomProductElement('button', 'item__add', 'Adicionar ao carrinho!'));
   return section;
+};
+
+const createCustomCartElement = (element, className, innerText) => {
+  const e = document.createElement(element);
+  e.className = className;
+  e.innerText = innerText;
+  if (element === 'button') e.addEventListener('click', (e) => { cartItemClickListener(e) });
+  return e;
 };
 
 const createCartItemElement = ({ sku, title, price, image }) => {
   const li = document.createElement('li');
-  const liSku = document.createElement('p');
-  const liTitle = document.createElement('p');
-  const liPrice = document.createElement('p');
   const section = document.createElement('section');
-  const removeBtn = document.createElement('button');
 
   li.className = 'cart__item';
-  liSku.innerText = sku;
-  liSku.className = 'cart__item__sku';
-  liTitle.innerText = title;
-  liTitle.className = 'cart__item__title';
-  liPrice.innerText = `R$ ${parseFloat(price).toFixed(2)}`;
-  liPrice.className = 'cart__item__price';
-  removeBtn.innerText = 'Remover item';
-  removeBtn.className = 'cart__item__removeBtn'
   section.className = 'cart__item__section';
 
-  section.appendChild(liTitle);
-  section.appendChild(liPrice);
-  section.appendChild(liSku);
-  section.appendChild(removeBtn);
+  section.appendChild(createCustomCartElement('span', 'cart__item__sku', sku));
+  section.appendChild(createCustomCartElement('span', 'cart__item__title', title));
+  section.appendChild(createCustomCartElement('span', 'cart__item__price', `R$ ${parseFloat(price).toFixed(2)}`));
+  section.appendChild(createCustomCartElement('button', 'cart__item__removeBtn', 'Remover item'));
+
   li.appendChild(section);
-  li.appendChild(createProductImageElement(image, 'cart__img'));
-  removeBtn.addEventListener('click', cartItemClickListener);
+  li.appendChild(createImageElement(image, 'cart__img'));
   return li;
 };
 
 const createProductList = async (searchValue) => {
   displayLoadingScreen('flex');
   clearProductList();
+
   const productList = await fetchProducts(searchValue);
   const productSection = document.querySelector('.items');
+
   productList.results.forEach((product) => {
     const item = createProductItemElement({
       sku: product.id,
@@ -68,15 +66,17 @@ const createProductList = async (searchValue) => {
     });
     productSection.appendChild(item);
   });
+
   applyAddItemToCartLogic();
   displayLoadingScreen('none');
 };
 
 if (typeof module !== 'undefined') {
   module.exports = {
-    createProductImageElement,
-    createCustomElement,
+    createImageElement,
+    createCustomProductElement,
     createProductItemElement,
+    createCustomCartElement,
     createCartItemElement,
     createProductList
   };
