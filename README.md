@@ -85,7 +85,7 @@ Guilherme Garcia - garciaguig@gmail.com
 <p align="right"><a href="#readme-top">Voltar ao topo</a></p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[project-demo]: /project-demo.gif
+[project-demo]: ./media/project-demo.gif
 [html5-url]: https://developer.mozilla.org/en-US/docs/Web/HTML
 [html5-badge]: https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
 [css3-url]: https://developer.mozilla.org/en-US/docs/Web/CSS
