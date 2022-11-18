@@ -18,7 +18,7 @@
 ## Sobre o Projeto
 Projeto **07** do curso de Desenvolvimento Web da [Trybe](https://www.betrybe.com/).
 
-Este projeto utiliza a [API do Mercado Livre](https://developers.mercadolivre.com.br/pt_br/api-docs-pt-br) para buscar produtos à venda no site. Dessa forma, será possível simular uma página de e-commerce na qual a pessoa usuária poderá adicionar e remover itens ao carrinho de compras, além de pesquisar os produtos que desejar.
+Este projeto utiliza a [API do Mercado Livre](https://developers.mercadolivre.com.br/pt_br/api-docs-pt-br) para buscar produtos à venda no site. Dessa forma, é possível simular uma página de e-commerce na qual a pessoa usuária poderá adicionar e remover itens ao carrinho de compras, além de pesquisar os produtos que desejar.
 
 ![Project Shopping Cart][project-demo]
 
@@ -31,7 +31,10 @@ Este projeto utiliza a [API do Mercado Livre](https://developers.mercadolivre.co
 
 ## Habilidades
 <ul>
-  <li></li>
+  <li>Aplicação de operações assíncronas.</li>
+  <li>Utilização de APIs para consumir dados externos.</li>
+  <li>Execução de requisições externas.</li>
+  <li>Escrita de testes e funções utilizando a abordagem de desenvolvimento orientado a testes (TDD).</li>
 </ul>
 
 <p align="right"><a href="#readme-top">Voltar ao topo</a></p>
