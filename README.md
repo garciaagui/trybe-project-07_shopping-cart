@@ -55,9 +55,18 @@ Para rodar o projeto localmente, siga os passos abaixo.
 
 1. Clone o repositório;
 ```
-git clone git@github.com:garciaagui/trybe-project-bonus_todo-list.git
+git clone git@github.com:garciaagui/trybe-project-07_shopping-cart.git
 ```
-2. Vá para `index.html` e utilize a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) para abrir a página em seu navegador.
+2. Instale as dependências;
+```
+npm install
+```
+3. Vá para `index.html` e utilize a extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) para abrir a página em seu navegador;
+
+4. Para consultar os testes, utilize o comando `npm test`. É possível testar cada arquivo individualmente, conforme o exemplo abaixo.
+```
+npm test tests/fetchItem.test.js
+```
 
 <p align="right"><a href="#readme-top">Voltar ao topo</a></p>
 
