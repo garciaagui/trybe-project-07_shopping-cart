@@ -1,0 +1,30 @@
+{
+  "name": "trybe-project-07_shopping-cart",
+  "version": "1.0.0",
+  "description": "<a name=\"readme-top\"></a>",
+  "main": "script.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/garciaagui/trybe-project-07_shopping-cart.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/garciaagui/trybe-project-07_shopping-cart/issues"
+  },
+  "homepage": "https://github.com/garciaagui/trybe-project-07_shopping-cart#readme",
+  "devDependencies": {
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1"
+  }
+}
