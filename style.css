@@ -229,7 +229,8 @@ body {
   transition: 0.5s;
 }
 
-.item .item__sku {
+.item .item__sku,
+.cart__item__sku {
   display: none;
 }
 

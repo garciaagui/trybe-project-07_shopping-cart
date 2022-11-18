@@ -85,15 +85,22 @@ const createProductItemElement = ({ sku, name, price, image }) => {
 
 const applyCartSaveLogic = () => {
   const itemsArr = Array.from(document.querySelectorAll('.cart__item'))
-    .map((item) => `${item.lastChild.src} <li>${item.innerText}</li>`);
+    .map((item) => {
+      const itemObj = {
+        sku: item.querySelector('.cart__item__sku').innerText,
+        title: item.querySelector('.cart__item__title').innerText,
+        price: item.querySelector('.cart__item__price').innerText.replace('R$ ', ''),
+        image: item.querySelector('.cart__img').src,
+      }
+      return itemObj;
+    });
   saveCartItems(JSON.stringify(itemsArr));
 };
 
 const calculateSubtotal = async () => {
   const storedItems = JSON.parse(getSavedCartItems());
   const subtotalSection = document.querySelector('.total-price');
-  const priceItems = storedItems.map((item) => {
-    const price = item.split('R$ ')[1].match(/\d+/g).join('.');
+  const priceItems = storedItems.map(({ price }) => {
     return parseFloat(price);
   });
   const subtotal = priceItems.reduce((total, curr) => (Math.round((total + curr) * 100) / 100), 0);
@@ -128,17 +135,20 @@ const cartItemClickListener = (event) => {
   calculateSubtotal();
 };
 
-const createCartItemElement = ({ name, salePrice, image }) => {
+const createCartItemElement = ({ sku, title, price, image }) => {
   const li = document.createElement('li');
+  const liSku = document.createElement('p');
   const liTitle = document.createElement('p');
   const liPrice = document.createElement('p');
   const section = document.createElement('section');
   const removeBtn = document.createElement('button');
 
   li.className = 'cart__item';
-  liTitle.innerText = name;
+  liSku.innerText = sku;
+  liSku.className = 'cart__item__sku';
+  liTitle.innerText = title;
   liTitle.className = 'cart__item__title';
-  liPrice.innerText = `R$ ${parseFloat(salePrice).toFixed(2)}`;
+  liPrice.innerText = `R$ ${parseFloat(price).toFixed(2)}`;
   liPrice.className = 'cart__item__price';
   removeBtn.innerText = 'Remover item';
   removeBtn.className = 'cart__item__removeBtn'
@@ -146,6 +156,7 @@ const createCartItemElement = ({ name, salePrice, image }) => {
 
   section.appendChild(liTitle);
   section.appendChild(liPrice);
+  section.appendChild(liSku);
   section.appendChild(removeBtn);
   li.appendChild(section);
   li.appendChild(createProductImageElement(image, 'cart__img'));
@@ -162,8 +173,8 @@ const addItemToCart = async (event) => {
   const { id, title, price, thumbnail } = item;
   cartList.appendChild(createCartItemElement({
     sku: id,
-    name: title,
-    salePrice: price,
+    title,
+    price,
     image: thumbnail,
   }));
   applyCartSaveLogic();
@@ -203,11 +214,8 @@ const retrieveCartItems = () => {
   const storedItems = JSON.parse(getSavedCartItems());
   if (storedItems) {
     storedItems.forEach((item) => {
-      const info = item.split(' <li>');
-      const priceIndex = info[1].indexOf('R$');
-      const name = info[1].slice(0, priceIndex);
-      const price = info[1].slice(priceIndex, info[1].indexOf('</li')).replace('R$', '');
-      cartList.appendChild(createCartItemElement({ name, salePrice: price, image: info[0] }));
+      const { sku, title, price, image } = item;
+      cartList.appendChild(createCartItemElement({ sku, title, price, image }));
     });
     Array.prototype.slice.call(document.getElementsByTagName('br'))
       .forEach((item) => {
