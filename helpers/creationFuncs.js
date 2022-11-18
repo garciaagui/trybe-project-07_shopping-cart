@@ -29,7 +29,7 @@ const createCustomCartElement = (element, className, innerText) => {
   const e = document.createElement(element);
   e.className = className;
   e.innerText = innerText;
-  if (element === 'button') e.addEventListener('click', (e) => { cartItemClickListener(e) });
+  if (element === 'button') e.addEventListener('click', (e) => { applyCartItemLogic(e) });
   return e;
 };
 

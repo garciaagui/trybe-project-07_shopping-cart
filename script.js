@@ -9,6 +9,7 @@ const calculateSubtotal = async () => {
   const priceItems = storedItems.map(({ price }) => {
     return parseFloat(price);
   });
+
   const subtotal = priceItems.reduce((total, curr) => (Math.round((total + curr) * 100) / 100), 0);
   localStorage.setItem('subtotalPrice', subtotal);
   subtotalSection.innerHTML = subtotal.toLocaleString('pt-BR', currencyFormat);;
@@ -25,17 +26,8 @@ const clearCart = () => {
   while (cartList.firstChild) {
     cartList.removeChild(cartList.firstChild);
   }
-  displayPopupAlert('cleared')
-  applyCartSaveLogic();
-  displayEmptyCartMessage();
-  calculateSubtotal();
-};
 
-const cartItemClickListener = (event) => {
-  if (event.target.parentElement.parentElement.className === 'cart__item') {
-    event.target.parentElement.parentElement.remove();
-  }
-  displayPopupAlert('removed')
+  displayPopupAlert('cleared')
   applyCartSaveLogic();
   displayEmptyCartMessage();
   calculateSubtotal();
@@ -44,16 +36,18 @@ const cartItemClickListener = (event) => {
 const getSkuFromProductItem = (item) => item.querySelector('span.item__sku').innerText;
 
 const addItemToCart = async (event) => {
-  displayPopupAlert('added');
   const listItem = event.target.parentElement;
   const item = await fetchItem(getSkuFromProductItem(listItem));
   const { id, title, price, thumbnail } = item;
+
   cartList.appendChild(createCartItemElement({
     sku: id,
     title,
     price,
     image: thumbnail,
   }));
+
+  displayPopupAlert('added');
   applyCartSaveLogic();
   displayEmptyCartMessage();
   await calculateSubtotal();
@@ -61,6 +55,7 @@ const addItemToCart = async (event) => {
 
 const retrieveCartItems = () => {
   const storedItems = JSON.parse(getSavedCartItems());
+
   if (storedItems) {
     storedItems.forEach((item) => {
       const { sku, title, price, image } = item;
@@ -72,6 +67,7 @@ const retrieveCartItems = () => {
       });
     applyRemoveItemFromCartLogic();
   }
+
   calculateSubtotal();
 };
 

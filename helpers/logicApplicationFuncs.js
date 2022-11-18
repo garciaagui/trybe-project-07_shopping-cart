@@ -1,3 +1,13 @@
+const applyCartItemLogic = (event) => {
+  if (event.target.parentElement.parentElement.className === 'cart__item') {
+    event.target.parentElement.parentElement.remove();
+  }
+  displayPopupAlert('removed')
+  applyCartSaveLogic();
+  displayEmptyCartMessage();
+  calculateSubtotal();
+};
+
 const applyCartSaveLogic = () => {
   const itemsArr = Array.from(document.querySelectorAll('.cart__item'))
     .map((item) => {
@@ -19,11 +29,12 @@ const applyAddItemToCartLogic = () => {
 
 const applyRemoveItemFromCartLogic = () => {
   Array.from(document.querySelectorAll('.cart__item'))
-    .forEach((item) => item.addEventListener('click', cartItemClickListener));
+    .forEach((item) => item.addEventListener('click', applyCartItemLogic));
 };
 
 if (typeof module !== 'undefined') {
   module.exports = {
+    applyCartItemLogic,
     applyCartSaveLogic,
     applyAddItemToCartLogic,
     applyRemoveItemFromCartLogic,
