@@ -55,7 +55,7 @@ const addItemToCart = async (event) => {
     image: thumbnail,
   }));
   applyCartSaveLogic();
-  hideEmptyCartMessage();
+  displayEmptyCartMessage();
   await calculateSubtotal();
 };
 
@@ -75,7 +75,7 @@ const retrieveCartItems = () => {
   calculateSubtotal();
 };
 
-window.addEventListener('scroll', () => { showScrollDownCartTitle() });
+window.addEventListener('scroll', () => { displayScrollDownCartTitle() });
 
 window.onload = () => {
   createProductList('computador');

@@ -55,7 +55,7 @@ const createCartItemElement = ({ sku, title, price, image }) => {
 };
 
 const createProductList = async (searchValue) => {
-  displayLoadingScreen();
+  displayLoadingScreen('flex');
   clearProductList();
   const productList = await fetchProducts(searchValue);
   const productSection = document.querySelector('.items');
@@ -69,7 +69,7 @@ const createProductList = async (searchValue) => {
     productSection.appendChild(item);
   });
   applyAddItemToCartLogic();
-  hideLoadingScreen();
+  displayLoadingScreen('none');
 };
 
 if (typeof module !== 'undefined') {

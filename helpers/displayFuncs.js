@@ -4,47 +4,41 @@ const popupOperations = {
   cleared: 'Carrinho limpo!'
 }
 
-const displayLoadingScreen = () => {
-  const container = document.querySelector('.container');
-  const loadingScreen = document.createElement('div');
-  loadingScreen.classList.add('loading');
-  loadingScreen.innerHTML = 'Carregando...';
-  container.appendChild(loadingScreen);
-};
-
-const hideLoadingScreen = () => {
-  const loadingScreen = document.querySelector('.loading');
-  loadingScreen.remove();
+const displayLoadingScreen = (value) => {
+  const loadingScreen = document.querySelector('.loading-screen');
+  loadingScreen.style.display = value;
 };
 
 const displayEmptyCartMessage = () => {
-  if (!cartList.children.length) {
-    const emptyCartMessage = document.createElement('div');
-    emptyCartMessage.classList.add('empty-cart-message');
-    emptyCartMessage.innerHTML = 'Carrinho vazio...';
-    cartList.appendChild(emptyCartMessage);
+  const cartList = document.querySelector('.cart__items');
+  const existingMessage = document.querySelector('.empty-cart-message');
+
+  if (!cartList.children.length && !existingMessage) {
+    const newMessage = document.createElement('div');
+    newMessage.classList.add('empty-cart-message');
+    newMessage.innerHTML = 'Carrinho vazio...';
+    cartList.appendChild(newMessage);
+  }
+
+  if (cartList.children.length > 1 && existingMessage) {
+    existingMessage.remove();
   }
 };
 
-const hideEmptyCartMessage = () => {
-  const emptyCartMessage = document.querySelector('.empty-cart-message');
-  if (cartList.children.length && emptyCartMessage) {
-    emptyCartMessage.remove();
-  }
-};
-
-const displayPopupAlert = (operation) => {
+const displayPopupAlert = (op) => {
   const container = document.querySelector('.popup-container');
   const popup = document.createElement('div');
-  popup.classList.add(operation);
-  popup.innerHTML = popupOperations[operation];
+
+  popup.classList.add(op);
+  popup.innerHTML = popupOperations[op];
   container.appendChild(popup);
+
   setTimeout(() => {
     popup.remove();
   }, 3000)
 }
 
-const showScrollDownCartTitle = () => {
+const displayScrollDownCartTitle = () => {
   const scrollDownCartTitle = document.querySelector('.scroll-down-title');
   scrollDownCartTitle.innerText = 'Meu carrinho';
   if (window.scrollY > 58.8) {
@@ -55,10 +49,8 @@ const showScrollDownCartTitle = () => {
 if (typeof module !== 'undefined') {
   module.exports = {
     displayLoadingScreen,
-    hideLoadingScreen,
     displayEmptyCartMessage,
-    hideEmptyCartMessage,
     displayPopupAlert,
-    showScrollDownCartTitle,
+    displayScrollDownCartTitle,
   };
 };
