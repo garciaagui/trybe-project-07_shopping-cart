@@ -1,0 +1,58 @@
+.popup-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  position: absolute;
+  right: 25px;
+  top: 10px;
+  width: 200px;
+}
+
+.added,
+.removed,
+.cleared {
+  align-items: center;
+  animation: popup 3s ease-in-out;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.658);
+  display: flex;
+  font-size: 14px;
+  font-weight: 900;
+  height: 40px;
+  justify-content: center;
+  margin-bottom: 10px;
+  position: relative;
+  top: 0;
+  width: 100%;
+}
+
+.added {
+  background-color: rgba(10, 118, 78, 0.80);
+  border: 2px solid rgba(10, 118, 78);
+  color: rgb(255, 255, 255);
+}
+
+.removed {
+  background-color: rgba(255, 62, 62, 0.8);
+  border: 2px solid rgba(255, 62, 62);
+  color: rgb(255, 255, 255);
+}
+
+.cleared {
+  background-color: rgba(255, 68, 0, 0.80);
+  border: 2px solid orangered;
+  color: rgb(255, 255, 255);
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}

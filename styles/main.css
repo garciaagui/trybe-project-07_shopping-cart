@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+  font-family: Epilogue, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: rgb(241, 241, 241);
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
