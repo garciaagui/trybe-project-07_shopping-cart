@@ -7,9 +7,9 @@
   <ol>
     <li><a href="#sobre-o-projeto">Sobre o Projeto</a></li>
     <li><a href="#tecnologias">Tecnologias</a></li>
-    <li><a href="#habilidades">Habilidades</a></li>
-    <li><a href="#instruções">Instruções</a></li>
     <li><a href="#funcionalidades">Funcionalidades</a></li>
+    <li><a href="#como-executar-o-projeto">Como Executar o Projeto</a></li>
+    <li><a href="#habilidades">Habilidades</a></li>
     <li><a href="#sobre-a-trybe">Sobre a Trybe</a></li>
     <li><a href="#contato">Contato</a></li>
   </ol>
@@ -20,24 +20,14 @@ Projeto **07** do curso de Desenvolvimento Web da [Trybe](https://www.betrybe.co
 
 Este projeto utiliza a [API do Mercado Livre](https://developers.mercadolivre.com.br/pt_br/api-docs-pt-br) para buscar produtos à venda no site. Dessa forma, é possível simular uma página de e-commerce na qual a pessoa usuária poderá adicionar e remover itens ao carrinho de compras, além de pesquisar os produtos que desejar.
 
-![Project Shopping Cart][project-demo]
+[![Project Shopping Cart][project-demo]](https://garciaagui.github.io/trybe-project-07_shopping-cart/)
 
-<p align="right"><a href="#readme-top">Voltar ao topo</a></p>
+<br/>
 
 ## Tecnologias
 [![HTML5][html5-badge]][html5-url] [![CSS3][css3-badge]][css3-url] [![JavaScript][javascript-badge]][javascript-url] [![Jest][jest-badge]][jest-url]
 
-<p align="right"><a href="#readme-top">Voltar ao topo</a></p>
-
-## Habilidades
-<ul>
-  <li>Aplicação de operações assíncronas.</li>
-  <li>Utilização de APIs para consumir dados externos.</li>
-  <li>Execução de requisições externas.</li>
-  <li>Escrita de testes e funções utilizando a abordagem de desenvolvimento orientado a testes (TDD).</li>
-</ul>
-
-<p align="right"><a href="#readme-top">Voltar ao topo</a></p>
+<br/>
 
 ## Funcionalidades
 <ul>
@@ -48,9 +38,11 @@ Este projeto utiliza a [API do Mercado Livre](https://developers.mercadolivre.co
   <li>Caso a pessoa usuária saia ou recarregue a página, os itens adicionados ao carrinho de compras serão mantidos.</li>
 </ul>
 
-<p align="right"><a href="#readme-top">Voltar ao topo</a></p>
+<br/>
 
-## Instruções
+## Como Executar o Projeto
+Caso deseje somente testar a aplicação, [clique aqui](https://garciaagui.github.io/trybe-project-07_shopping-cart/).
+
 Para rodar o projeto localmente, siga os passos abaixo.
 
 1. Clone o repositório;
@@ -68,19 +60,29 @@ npm install
 npm test tests/fetchItem.test.js
 ```
 
-<p align="right"><a href="#readme-top">Voltar ao topo</a></p>
+<br/>
+
+## Habilidades
+<ul>
+  <li>Aplicação de operações assíncronas.</li>
+  <li>Utilização de APIs para consumir dados externos.</li>
+  <li>Execução de requisições externas.</li>
+  <li>Escrita de testes e funções utilizando a abordagem de desenvolvimento orientado a testes (TDD).</li>
+</ul>
+
+<br/>
 
 ## Sobre a Trybe
 _"A [Trybe](https://www.betrybe.com/) é uma escola do futuro para qualquer pessoa que queira melhorar de vida e construir uma carreira de sucesso em tecnologia, onde a pessoa só paga quando conseguir um bom trabalho."_
 
 _"O programa conta com mais de 1.500 horas de aulas presenciais e online, aborda introdução ao desenvolvimento de software, front-end, back-end, ciência da computação, engenharia de software, metodologias ágeis e habilidades comportamentais._"
 
-<p align="right"><a href="#readme-top">Voltar ao topo</a></p>
+<br/>
 
 ## Contato
-Guilherme Garcia - garciaguig@gmail.com
+Projeto desenvolvido por Guilherme Garcia. Seguem abaixo minhas redes sociais e meios de contato.
 
-[![Linkedin][linkedin-badge]][linkedin-url] [![GitHub][github-badge]][github-url] [![Instagram][instagram-badge]][instagram-url]
+[![Gmail][gmail-badge]][gmail-url] [![Linkedin][linkedin-badge]][linkedin-url] [![GitHub][github-badge]][github-url] [![Instagram][instagram-badge]][instagram-url]
 
 <p align="right"><a href="#readme-top">Voltar ao topo</a></p>
 
@@ -94,6 +96,8 @@ Guilherme Garcia - garciaguig@gmail.com
 [javascript-badge]: https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E
 [jest-url]: https://jestjs.io/
 [jest-badge]: https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white
+[gmail-badge]: https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white
+[gmail-url]: mailto:garciaguig@gmail.com
 [linkedin-badge]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [linkedin-url]: https://www.linkedin.com/in/garciaagui/
 [github-badge]: https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
